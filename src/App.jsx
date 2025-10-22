@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Fragment } from "react";
 import { Icon } from "@iconify/react";
 import AddButton from "./components/AddButton";
@@ -17,24 +16,15 @@ const buttonStyle = {
 export default function App() {
   const [userInput, setUserInput] = useState("");
   const [list, setList] = useState([]);
-  const [editingIndex, setEditingIndex] = useState(null);
 
   function handleAddTodo() {
     if (userInput.trim() === "") {
-      window.alert("Please enter something!");
+      window.alert("Please enter something.");
       return;
     }
 
-    setList([...list, userInput]);
+    setList([...list, { message: userInput, isDone: false }]);
     setUserInput("");
-  }
-
-  function handleOnChange(event, editingIndex) {
-    if (event.target.checked) {
-      window.alert("Check box changed!" + editingIndex);
-    } else {
-      window.alert("Check box not changed!");
-    }
   }
 
   return (
@@ -47,23 +37,37 @@ export default function App() {
         style={inputStyle}
       />
 
-      <ol>
-        {list.map(function (element, index) {
-          // Create a key by element + index.
+      <ul>
+        {list.map((element, index) => {
+          // Create a key by element and index.
           const elementKey = element + String(index);
+          // Create an id and name for id property.
+          const checkboxId = `marked-${index}`;
+
           return (
             <li key={elementKey}>
-              <span>{element}</span>
+              {element.isDone ? (
+                <span style={{ textDecoration: "line-through" }}>
+                  {element.message}
+                </span>
+              ) : (
+                <span>{element.message}</span>
+              )}
+
               <input
                 type="checkbox"
-                name="marked"
-                id="marked"
-                onChange={(event) => handleOnChange(event, index)}
+                id={checkboxId}
+                checked={element.checked}
+                onChange={(event) => {
+                  const updatedList = [...list];
+                  updatedList[index].isDone = event.target.checked;
+                  setList(updatedList);
+                }}
               />
             </li>
           );
         })}
-      </ol>
+      </ul>
 
       {/* Add button with the icon. */}
       <AddButton buttonStyle={buttonStyle} handleAddTodo={handleAddTodo}>
