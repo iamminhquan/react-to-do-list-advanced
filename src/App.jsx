@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Fragment } from "react";
 import { Icon } from "@iconify/react";
 import AddButton from "./components/AddButton";
+import RemoveButton from "./components/RemoveButton";
 
 const inputStyle = {
   width: 200,
@@ -24,6 +25,15 @@ export default function App() {
     }
 
     setList([...list, { message: userInput, isDone: false }]);
+    setUserInput("");
+  }
+
+  function handleRemoveTodo(itemRemove) {
+    const filteredList = list.filter((element) => {
+      return element !== itemRemove;
+    });
+
+    setList(filteredList);
     setUserInput("");
   }
 
@@ -64,12 +74,20 @@ export default function App() {
                   setList(updatedList);
                 }}
               />
+
+              {/* Remove todo button, use the iconify. */}
+              <RemoveButton
+                buttonStyle={buttonStyle}
+                handleRemoveTodo={() => handleRemoveTodo(element)}
+              >
+                <Icon icon="mdi:delete" />
+              </RemoveButton>
             </li>
           );
         })}
       </ul>
 
-      {/* Add button with the icon. */}
+      {/* Add button with the iconify. */}
       <AddButton buttonStyle={buttonStyle} handleAddTodo={handleAddTodo}>
         <Icon icon="mdi:plus" />
       </AddButton>
