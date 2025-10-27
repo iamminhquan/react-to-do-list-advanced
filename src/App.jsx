@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Fragment } from "react";
 import { Icon } from "@iconify/react";
 
@@ -44,14 +44,22 @@ export default function App() {
     setUserInput("");
   }
 
-  function handleCompleteTodo(event, index) {
+  function handleCompleteTodo(index) {
     const updatedList = [...list];
     updatedList[index].isDone = updatedList[index].isDone ? false : true;
     setList(updatedList);
   }
 
+  const completedCount = useMemo(() => {
+    return list.filter((element) => element.isDone).length;
+  }, [list]);
+
   return (
     <Fragment>
+      <h1>To-Do List</h1>
+
+      <h2>Completed tasks: {completedCount}</h2>
+
       <input
         type="text"
         value={userInput}
@@ -77,7 +85,7 @@ export default function App() {
 
               {/* Click this to complete tasks :D */}
               <CompleteButton
-                handleCompleteTodo={(event) => handleCompleteTodo(event, index)}
+                handleCompleteTodo={() => handleCompleteTodo(index)}
               >
                 <Icon icon="mdi:check-bold" />
               </CompleteButton>
