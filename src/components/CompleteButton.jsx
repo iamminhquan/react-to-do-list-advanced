@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 
-export default function RemoveButton({ handleRemoveTodo, children }) {
+export default function CompleteButton({ handleCompleteTodo, children }) {
   return (
     <Fragment>
-      <button onClick={handleRemoveTodo}>
+      <button onClick={handleCompleteTodo}>
         {/* This is the icon props. */}
         {children}
       </button>

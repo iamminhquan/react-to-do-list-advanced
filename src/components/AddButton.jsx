@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 
-export default function AddButton({ buttonStyle, handleAddTodo, children }) {
+export default function AddButton({ handleAddTodo, children }) {
   return (
     <Fragment>
-      <button style={buttonStyle} onClick={handleAddTodo}>
+      <button onClick={handleAddTodo}>
         {/* This is the icon props. */}
         {children}
       </button>

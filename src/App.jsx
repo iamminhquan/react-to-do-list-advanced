@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Fragment } from "react";
 import { Icon } from "@iconify/react";
+
 import AddButton from "./components/AddButton";
 import RemoveButton from "./components/RemoveButton";
+import CompleteButton from "./components/CompleteButton";
 
 const inputStyle = {
   width: 200,
@@ -37,6 +39,12 @@ export default function App() {
     setUserInput("");
   }
 
+  function handleCompleteTodo(event, index) {
+    const updatedList = [...list];
+    updatedList[index].isDone = updatedList[index].isDone ? false : true;
+    setList(updatedList);
+  }
+
   return (
     <Fragment>
       <input
@@ -51,8 +59,6 @@ export default function App() {
         {list.map((element, index) => {
           // Create a key by element and index.
           const elementKey = element + String(index);
-          // Create an id and name for id property.
-          const checkboxId = `marked-${index}`;
 
           return (
             <li key={elementKey}>
@@ -64,22 +70,15 @@ export default function App() {
                 <span>{element.message}</span>
               )}
 
-              <input
-                type="checkbox"
-                id={checkboxId}
-                checked={element.checked}
-                onChange={(event) => {
-                  const updatedList = [...list];
-                  updatedList[index].isDone = event.target.checked;
-                  setList(updatedList);
-                }}
-              />
+              {/* Click this to complete tasks :D */}
+              <CompleteButton
+                handleCompleteTodo={(event) => handleCompleteTodo(event, index)}
+              >
+                <Icon icon="mdi:check-bold" />
+              </CompleteButton>
 
               {/* Remove todo button, use the iconify. */}
-              <RemoveButton
-                buttonStyle={buttonStyle}
-                handleRemoveTodo={() => handleRemoveTodo(element)}
-              >
+              <RemoveButton handleRemoveTodo={() => handleRemoveTodo(element)}>
                 <Icon icon="mdi:delete" />
               </RemoveButton>
             </li>
