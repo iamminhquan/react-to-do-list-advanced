@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Fragment } from "react";
 import { Icon } from "@iconify/react";
 
@@ -11,14 +11,19 @@ const inputStyle = {
   height: 20,
 };
 
-const buttonStyle = {
-  width: 70,
-  height: 25,
-};
-
 export default function App() {
   const [userInput, setUserInput] = useState("");
-  const [list, setList] = useState([]);
+
+  // Get data from local storage when component mounted.
+  const [list, setList] = useState(() => {
+    const savedList = localStorage.getItem("list");
+    return savedList ? JSON.parse(savedList) : [];
+  });
+
+  useEffect(() => {
+    // Update local storage when list updated.
+    localStorage.setItem("list", JSON.stringify(list));
+  }, [list]);
 
   function handleAddTodo() {
     if (userInput.trim() === "") {
@@ -87,7 +92,7 @@ export default function App() {
       </ul>
 
       {/* Add button with the iconify. */}
-      <AddButton buttonStyle={buttonStyle} handleAddTodo={handleAddTodo}>
+      <AddButton handleAddTodo={handleAddTodo}>
         <Icon icon="mdi:plus" />
       </AddButton>
     </Fragment>
