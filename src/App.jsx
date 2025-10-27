@@ -50,6 +50,7 @@ export default function App() {
     setList(updatedList);
   }
 
+  // Logic to track tasks.
   const completedCount = useMemo(() => {
     return list.filter((element) => element.isDone).length;
   }, [list]);
@@ -58,6 +59,7 @@ export default function App() {
     <Fragment>
       <h1>To-Do List</h1>
 
+      {/* Completed count to track how many tasks were completed. */}
       <h2>Completed tasks: {completedCount}</h2>
 
       <input
